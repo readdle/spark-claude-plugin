@@ -1,5 +1,3 @@
-![Spark](assets/icon.png)
-
 # Spark for Claude
 
 Give Claude access to [Spark](https://sparkmailapp.com) - read, draft, triage, and act on your email, calendars, meetings, and contacts. The Spark plugin bundles the Spark MCP tools with the `use-spark` skill and a set of recipes and personas: step-by-step workflows such as `/spark:recipe-morning-standup` or `/spark:recipe-inbox-zero`.
@@ -23,15 +21,8 @@ What Claude can do:
 ## Requirements
 
 - [Spark Desktop](https://sparkmailapp.com) on macOS or Windows, signed in to at least one account.
-- Spark CLI 1.4.0 or later, enabled: in Spark, go to **Settings → AI Agents → Spark CLI Setup** and follow the prompts. Check the version with `spark --version`. On Windows, restart Claude after setup so it picks up the updated `PATH`.
-- Per-account access levels - `read-only`, `triage` (everything in read-only plus drafts, comments, and email/contact actions), or `send` (everything in triage plus sending mail and calendar invitations) - configured in **Settings → AI Agents → Spark CLI Access**. Recipes and personas declare the level they need; running one against an account with insufficient access returns an error explaining how to upgrade.
-
-## Install
-
-- **Claude Code**: `/plugin marketplace add readdle/spark-claude-plugin`, then `/plugin install spark@spark-mail`.
-- **Claude Desktop (Cowork)**: go to **Customize → Plugins → Add marketplace**, enter `readdle/spark-claude-plugin`, and install **Spark**.
-
-The Spark tools run on your computer, so they work in Claude Code and in Cowork sessions on your computer. Chat conversations load the skills but not the local tools.
+- Spark CLI enabled: in Spark, go to **Settings → AI Agents → Spark CLI Setup** and follow the prompts.
+- Per-account access levels - `read-only`, `triage` (everything in read-only plus drafts, comments, and email/contact actions), or `send` (everything in triage plus sending mail and calendar invitations) - configured in **Settings → AI Agents → Access**. Recipes and personas declare the level they need; running one against an account with insufficient access returns an error explaining how to upgrade.
 
 ## What the plugin runs
 
