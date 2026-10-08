@@ -9,6 +9,11 @@
     },
     "homepage": "https://sparkmailapp.com",
     "repository": "https://github.com/readdle/spark-claude-plugin",
+    "documentationUrl": "https://sparkmailapp.com/help/spark-cli",
+    "supportUrl": "https://sparkmailapp.com/help",
+    "privacyPolicyUrl": "https://sparkmailapp.com/privacy",
+    "termsOfServiceUrl": "https://sparkmailapp.com/terms",
+    "icon": "./assets/icon.png",
     "license": "MIT",
     "keywords": [
         "spark",
