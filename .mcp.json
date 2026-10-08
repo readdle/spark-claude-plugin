@@ -1,0 +1,8 @@
+{
+    "mcpServers": {
+        "spark": {
+            "command": "spark",
+            "args": ["mcp"]
+        }
+    }
+}

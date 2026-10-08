@@ -1,0 +1,15 @@
+{
+    "name": "spark-mail",
+    "description": "Spark Mail plugins for Claude.",
+    "owner": {
+        "name": "Spark Mail Limited",
+        "url": "https://sparkmailapp.com"
+    },
+    "plugins": [
+        {
+            "name": "spark",
+            "source": "./",
+            "description": "Spark email, calendar, meetings, and contacts for Claude, with recipes and personas."
+        }
+    ]
+}
