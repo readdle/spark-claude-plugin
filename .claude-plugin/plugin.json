@@ -1,7 +1,7 @@
 {
     "name": "spark",
     "displayName": "Spark",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Connect Claude to your Spark inbox - read, draft, triage, and act on email, calendars, meetings, and contacts, with guided recipes and personas for common workflows.",
     "author": {
         "name": "Spark Mail Limited",
