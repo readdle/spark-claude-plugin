@@ -4,7 +4,7 @@ description: >-
   Review and finalize multiple pending drafts in a batch session: read
   context, edit, or discard.
 metadata:
-  version: 1.0.0
+  version: 1.0.2
   requires:
     skills:
       - use-spark
@@ -43,7 +43,7 @@ Check if the conversation has moved on since the draft was created - someone els
 
 For each draft, present the options to the user:
 
-**Edit** - the draft needs changes before sending:
+**Edit** - the draft needs changes before sending. Run `draft { "mode": "context" }` first and rewrite the body in line with the Spark Profile and Custom Instructions it shows:
 
 ```
 draft { "edit": "<id>", "body": "Updated content..." }
@@ -52,11 +52,14 @@ draft { "edit": "<id>", "subject": "Updated subject" }
 
 **Keep as-is** - the draft is ready to send. Note it for the user.
 
-**Discard** - the draft is no longer needed. Move to trash:
+**Discard** - the draft is no longer needed. Deleting a draft is permanent (drafts have no Trash), so confirm with the user first:
 
 ```
-action { "action_name": "moveToTrash", "message_ids": ["<id>"] }
+draft { "delete": ["<id>"] }                    # one draft
+draft { "delete": ["<id>", "<id>", "<id>"] }    # several at once
 ```
+
+With several IDs, the valid drafts are deleted even if others are refused; read the result for any that were not.
 
 ### Step 4: Report
 
@@ -70,4 +73,3 @@ Summarize: "Reviewed N drafts. M edited, K ready to send, L discarded."
 - `draft`'s `edit` updates the draft in place - it doesn't create a new one.
 - For drafts that are replies (`reply_to`), read the original thread to verify the reply still makes sense.
 - Run this recipe weekly to prevent draft accumulation.
-- Discarding via `moveToTrash` is reversible - the draft can be recovered from trash if needed.
