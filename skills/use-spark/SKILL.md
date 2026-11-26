@@ -27,7 +27,7 @@ Each account and shared inbox has its own **access level**, configured by the us
 | Level | Allowed operations |
 |-------|-------------------|
 | **read-only** | List, search, and read emails, threads, folders, events, contacts, meetings, teams |
-| **triage** | Everything in read-only plus all write operations: `draft` (including unscheduling a scheduled draft and setting its follow-up reminder), `comment`, `action`, `contact-action` |
+| **triage** | Everything in read-only plus all write operations: `draft` (including unscheduling a scheduled draft and setting its follow-up reminder), `comment`, `action`, `contact-action`, `history-undo` |
 | **send** | Everything in triage plus mail-emitting operations: sending drafts (`draft` with `send`, including scheduled "Send Later") and the entire `event` tool (create / update / delete / rsvp, including inviting or removing attendees) |
 
 Shared inboxes can have a different access level than the parent account - for example, a personal account may have triage access while a shared inbox under the same team is read-only or disabled.
@@ -71,6 +71,7 @@ Always call `accounts` once at the start of any non-trivial task to discover ava
 | `action` | triage | Perform actions on emails (archive, pin, snooze, assign, etc.) |
 | `contact-action` | triage | Perform actions on contacts (block, accept, categorize, etc.) |
 | `history` | read-only | Review what Spark's tools and CLI have done and how each call ended |
+| `history-undo` | triage | Revert one history entry (an action, contact action, or new draft) |
 
 ### accounts
 
@@ -800,12 +801,28 @@ Output:
 
 Page 1 of 1 (2 total entries)
 Showing entries that needed triage access or more (--access readOnly to include reads).
-The user can undo one in Spark Desktop, under Agent Activity.
+Revert one with the history-undo tool.
 ```
 
 Status is `ok`, `error` (it failed - `details` says why), `blocked` (Spark refused it, or the user stopped a held send), or `undone`. A `draft` send is recorded as `action send`, and gets its entry when its 60 seconds are over.
 
-**Undo.** No tool undoes an entry. If the user wants one reverted, tell them they can undo it in Spark Desktop, under **Agent Activity** - it works for actions, contact actions, and new drafts, not for a sent email or a deleted draft.
+### history-undo
+
+**Requires: triage** access level.
+
+Revert what one history entry changed - unpin what was pinned, put back what was moved, restore the category a contact had, or delete a draft the tools created - and mark the entry `undone`. The undo is not recorded as an entry of its own.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | yes | ID of the entry, from the ID column of `history` |
+
+```
+history-undo { "id": 42 }
+```
+
+Result: `Undid entry 42: action pin on message 14602.`
+
+It works on successful `action`, `contact-action`, and new-draft entries, while their items still exist and still hold the state the entry left them in. A sent email, a deleted draft, and a calendar change can't be undone. Undo only when the user asks for it. The user can also undo an entry in Spark Desktop, under **Agent Activity**.
 
 ## Smart Categories
 
@@ -948,5 +965,5 @@ contact-action { "action_name": "enableAutosummaryForContact", "emails": ["newsl
 - `draft { "delete": ["<pk>"] }` discards a draft permanently - there is no Trash and no undo, so use it only when the user asked for it; it takes several IDs at once.
 - Send or schedule a draft with `draft { "send": ["<pk>"] }` (add `date` to schedule); sending waits 60 seconds for the user to undo it, so confirm the outcome with `history` after that, and the Outbox as a second check.
 - Scheduled and unsent mail is in `emails { "folder": "Outbox" }`, not in any mail folder - check it before and after scheduling or unscheduling.
-- Use `history` to check what a call did and how it ended. Undoing an entry is up to the user, in Spark Desktop under **Agent Activity**.
+- Use `history` to check what a call did and how it ended; when the user asks, `history-undo` reverts an action, contact action, or new draft.
 - If a write tool returns an "access denied" error, surface it to the user and point them at **Spark Desktop > Settings > AI Agents** to raise the level. They can also perform the action directly in Spark Desktop.
