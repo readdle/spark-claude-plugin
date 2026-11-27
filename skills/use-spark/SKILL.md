@@ -157,6 +157,7 @@ emails { "new_senders": true }
 | `is:shared_inbox_done` | completed/closed items in shared inbox |
 | `category:<name>` | `priority`, `personal`, `notification`, `newsletter`, `invitation`, `invitation_response` |
 | `assigned_to:<who>` | `me`, `<email>`, `unassigned`, `other` |
+| `is:unassigned` | same as `assigned_to:unassigned` |
 | `assigned_by:me` | emails you delegated |
 | `filename:<name>` | `filename:report.pdf` |
 
@@ -706,6 +707,7 @@ Supported `action_name` values:
 | `changeCategoryNewsletters` | Reclassify as Newsletter |
 | `shareInTeam` | Share thread with teammates (`team`, `user`) |
 | `assign` | Assign to teammate (`assignee`, optional `date`, `comment`) |
+| `unassign` | Remove the assignment; in a shared inbox the thread returns to Unassigned. Fails if the thread is not assigned. Outside a shared inbox, reopen a completed delegation first |
 | `delegationComplete` | Mark delegation as complete |
 | `delegationReopen` | Reopen a completed delegation |
 
@@ -725,6 +727,7 @@ action { "action_name": "shareInTeam", "message_ids": ["1234"], "team": "Enginee
 action { "action_name": "shareInTeam", "message_ids": ["1234"], "user": ["alice@co.com", "bob@co.com"] }
 action { "action_name": "assign", "message_ids": ["1234"], "assignee": "bob@co.com" }
 action { "action_name": "assign", "message_ids": ["1234"], "assignee": "bob@co.com", "date": "2026-04-15", "comment": "Please review" }
+action { "action_name": "unassign", "message_ids": ["1234"] }
 action { "action_name": "delegationComplete", "message_ids": ["1234"] }
 action { "action_name": "delegationComplete", "message_ids": ["100", "200", "300"] }
 action { "action_name": "delegationReopen", "message_ids": ["1234"] }
